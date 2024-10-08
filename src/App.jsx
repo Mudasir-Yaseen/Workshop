@@ -9,6 +9,7 @@ import VisitSection from "./components/visit/VisitSection";
 import Footer from "./components/footer/Footer";
 import Quotation from "./components/quotation/Quotation";
 import BillMaker from "./components/bill/BillMaker";
+import ContactPage from "./components/contact/ContactPage";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         } />
         <Route path="/quotation" element={<Quotation />} />
         <Route path="/bill-maker" element={<BillMaker />} />
+        <Route path="/Contact" element={<ContactPage/>}/>
       </Routes>
       <Footer />
     </Router>
