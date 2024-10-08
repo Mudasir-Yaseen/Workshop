@@ -4,14 +4,15 @@ const billSchema = new mongoose.Schema({
   customerName: { type: String, required: true },
   items: [
     {
-      name: String,
-      price: Number,
-      quantity: Number,
-      size: String,
+      name: { type: String },
+      price: { type: Number },
+      quantity: { type: Number },
+      size: { type: String },
     },
   ],
   total: { type: Number, required: true },
   date: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Bill', billSchema);
+const Bill = mongoose.model('Bill', billSchema);
+module.exports = Bill;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import axios from "axios";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -119,6 +120,25 @@ const BillMaker = () => {
     setItems(newItems);
   };
 
+  const handleSaveBill = async () => {
+    const billData = {
+      customerName,
+      items,
+      total,
+    };
+  
+    try {
+      const response = await axios.post("http://localhost:3002/bill/create", billData); // Corrected URL
+      if (response.status === 201) { // Check for 201 Created status
+        alert("Bill saved successfully!");
+      }
+    } catch (error) {
+      console.error("Error saving bill:", error.response?.data || error.message); // Enhanced error logging
+      alert("Failed to save bill.");
+    }
+  };
+  
+
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-3xl font-bold mb-6 text-center">Bill Maker</h2>
@@ -202,7 +222,7 @@ const BillMaker = () => {
                 <td className="py-3 px-2 sm:px-6 text-left">
                   <button
                     onClick={() => deleteItem(index)}
-                    className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600"
+                    className="bg-red-500 text-white px-2 py-1 rounded-lg"
                   >
                     Delete
                   </button>
@@ -214,19 +234,25 @@ const BillMaker = () => {
 
         <button
           onClick={addItem}
-          className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 focus:outline-none"
+          className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg"
         >
           Add Item
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center mt-6">
-        <div className="font-bold text-xl mb-2 sm:mb-0">Total: ${total.toFixed(2)}</div>
+      <div className="flex justify-between mt-6">
         <button
           onClick={handleDownloadPDF}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
         >
           Download Bill
+        </button>
+
+        <button
+          onClick={handleSaveBill}
+          className="bg-purple-500 text-white px-4 py-2 rounded-lg"
+        >
+          Save Bill
         </button>
       </div>
     </div>
